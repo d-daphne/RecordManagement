@@ -1,0 +1,70 @@
+﻿@*
+All.cshtml
+
+A view for showing all records
+
+Revision History
+ 	Created. Sep 27 2024. Daphne
+ 	Revised. Oct 4 2024. Daphne
+*@
+
+@model AllBloodPressuresViewModel
+
+@{
+	ViewData["Title"] = "All Blood Pressures";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<div class="mt-3 text-center">
+	<p>
+		<a class="link-secondary link-offset-2-hover link-opacity-50-hover" asp-action="AddBloodPressure">Add new BP measurement</a> |
+		<a class="link-secondary link-offset-2-hover link-opacity-50-hover" asp-action="ShowInfo">Information on BP measurements</a>
+	</p>
+</div>
+
+@if (Model.BpList.Count > 0)
+{
+	@if (TempData["message"] != null)
+	{
+		<div class="alert alert-@TempData["className"]" alert-dismissible fade show role="alert">
+			@TempData["message"]
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	}
+		<table class="table table-bordered table-hover table-dark mt-3">
+			<thead>
+				<tr>
+					<th>Reading</th>
+					<th>Category</th>
+					<th>Position</th>
+					<th>Date Taken</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+
+		<tbody class="table-group-divider">
+			@foreach (var reading in Model.BpList)
+			{
+				<tr>
+					<td class="text-@(reading.ColorTextClass)">@reading.Systolic/@reading.Diastolic</td>
+					<td class="text-@(reading.ColorTextClass)">@reading.Category</td>
+					<td>@reading.Position?.PositionName</td>
+					<td>@reading.Date?.ToString("yyyy-MM-dd")</td>
+					<td>
+						<a class="btn btn-outline-primary" asp-controller="BloodPressure" asp-action="EditBloodPressure" asp-route-id="@reading.BPId">Edit</a> 
+						<a class="btn btn-outline-danger" asp-controller="BloodPressure" asp-action="DeleteBloodPressure" asp-route-id="@reading.BPId">Delete</a>
+					</td>
+				</tr>
+			}
+			</tbody>
+		</table>
+
+}
+else
+{
+		<div class="alert alert-warning" role="alert">
+			<p>No measurement is found.</p>
+		</div>
+}
+

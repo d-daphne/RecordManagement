@@ -1,0 +1,56 @@
+﻿@*
+Add.cshtml
+
+A view for adding new record
+ 
+Revision History
+ 	Created. Sep 27 2024. Daphne
+ 	Revised. Oct 4 2024. Daphne
+*@
+
+@model AddBloodPressureViewModel
+
+@{
+	ViewData["Title"] = "Add Blood Pressure";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<p><a class="link-primary link-offset-2-hover link-opacity-50-hover" asp-action="AllBloodPressures">Back to List</a></p>
+
+<form method="post">
+	<div asp-validation-summary="None" class="text-danger"></div>
+	<div class="mb-3">
+		<label class="form-label" asp-for="NewBloodPressure.Systolic">Systolic (mm Hg)</label>
+		<input type="text" class="form-control" asp-for="NewBloodPressure.Systolic"/>
+		<span asp-validation-for="NewBloodPressure.Systolic" class="form-text text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label" asp-for="NewBloodPressure.Diastolic">Diastolic (mm Hg)</label>
+		<input type="text" class="form-control" asp-for="NewBloodPressure.Diastolic" />
+		<span asp-validation-for="NewBloodPressure.Diastolic" class="form-text text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label" asp-for="NewBloodPressure.PositionId"></label>
+		<select class="form-select" asp-for="NewBloodPressure.PositionId">
+			<option selected value="">Please select a position</option>
+		@foreach (var option in Model.Positions)
+		{
+			<option value="@option.PositionId">@option.PositionName</option>
+		}
+		</select>
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label">Date of measurement</label>
+		<input type="date" class="form-control" asp-for="NewBloodPressure.Date" />
+		<span asp-validation-for="NewBloodPressure.Date" class="form-text text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+	 	<button class="btn btn-primary" type="submit">Add</button> 
+		<a class="btn btn-secondary" asp-controller="BloodPressure" asp-action="AllBloodPressures" role="button">Cancel</a>
+	</div>
+</form>
